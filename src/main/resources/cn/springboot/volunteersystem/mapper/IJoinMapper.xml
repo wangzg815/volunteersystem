@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.springboot.volunteersystem.mapper.IJoinMapper">
+    <resultMap id="joinMap" type="cn.springboot.volunteersystem.entity.Vjoin">
+        <id property="joinId" column="join_id"></id>
+        <result property="userId" column="user_id"></result>
+        <result property="publishId" column="publish_id"></result>
+        <result property="joinDate" column="join_date"></result>
+        <!--<association property="publish" column="publish_id" javaType="cn.springboot.volunteersystem.entity.Publish" select="cn.springboot.volunteersystem.mapper.IPublishMapper.findPublishByUserId"></association>-->
+    </resultMap>
+    <insert id="addJoin" parameterType="cn.springboot.volunteersystem.entity.Vjoin">
+        insert into vjoin(join_id,publish_id,user_id,join_date)
+        values (#{joinId},#{publishId},#{userId},#{joinDate})
+    </insert>
+    <!--判断是否存在-->
+    <select id="isExist" parameterType="cn.springboot.volunteersystem.entity.Vjoin" resultMap="joinMap">
+        select * from vjoin where user_id=#{userId} and publish_id=#{publishId}
+    </select>
+
+    <!--查看参与过的召集-->
+    <select id="joinOfOwn" parameterType="int" resultMap="joinMap">
+        select * from vjoin where user_id=#{userId}
+    </select>
+
+    <!--取消参与-->
+    <delete id="deleteJoin" parameterType="cn.springboot.volunteersystem.entity.Vjoin">
+        delete from vjoin where publish_id=#{publishId} and user_id=#{userId}
+    </delete>
+
+    <delete id="deleteJoinByPublishId" parameterType="int">
+        delete from vjoin where publish_id=#{publishId}
+    </delete>
+</mapper>

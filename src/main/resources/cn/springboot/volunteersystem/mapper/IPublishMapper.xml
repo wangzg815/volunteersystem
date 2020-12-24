@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.springboot.volunteersystem.mapper.IPublishMapper">
+    <resultMap id="publishMap" type="cn.springboot.volunteersystem.entity.Publish">
+        <id property="publishId" column="publish_id"></id>
+        <result property="publishTitle" column="publish_title"></result>
+        <result property="userId" column="user_id"></result>
+        <result property="publishContext" column="publish_context"></result>
+        <result property="publishAddress" column="publish_address"></result>
+        <result property="publishCreateTime" column="publish_create_time"></result>
+        <result property="publishDeadTime" column="publish_dead_time"></result>
+    </resultMap>
+    <!--添加志愿召集-->
+    <insert id="addPublish" parameterType="cn.springboot.volunteersystem.entity.Publish">
+        insert into publish(publish_title,user_id,publish_context,publish_address,publish_create_time,publish_dead_time)
+        values (#{publishTitle},#{userId},#{publishContext},#{publishAddress},#{publishCreateTime},#{publishDeadTime})
+    </insert>
+    <!--通过用户id来查找-->
+    <select id="findPublishByUserId" parameterType="int" resultMap="publishMap">
+        select publish_id,publish_title,user_id,publish_context,publish_address,publish_create_time,publish_dead_time
+        from publish where user_id=#{userId}
+    </select>
+    <!--查找全部的召集-->
+    <select id="findAllPublish" resultMap="publishMap">
+        select publish_id,publish_title,user_id,publish_context,publish_address,publish_create_time,publish_dead_time
+        from publish
+    </select>
+
+    <!--通过publishId查找-->
+    <select id="findPublishByPublishId" parameterType="int" resultMap="publishMap">
+        select * from publish where publish_id=#{publishId}
+    </select>
+
+    <!--根据publishId删除-->
+    <delete id="deletePublishByPublishId" parameterType="int">
+        delete from publish where publish_id=#{publishId}
+    </delete>
+</mapper>

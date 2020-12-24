@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.springboot.volunteersystem.mapper.IUserMapper">
+    <resultMap id="userMap" type="cn.springboot.volunteersystem.entity.User">
+        <id property="id" column="id"></id>
+        <result property="username" column="username"></result>
+        <result property="password" column="password"></result>
+        <result property="email" column="email"></result>
+        <result property="sex" column="sex"></result>
+        <result property="address" column="address"></result>
+        <result property="power" column="power"></result>
+    </resultMap>
+
+    <insert id="insertUser" parameterType="cn.springboot.volunteersystem.entity.User" >
+        insert into user(id,username,password,email,sex,address) values(#{id},#{username},#{password},#{email},#{sex},#{address});
+    </insert>
+
+    <select id="findUserByName" parameterType="String" resultType="String">
+        select username from user where username=#{username}
+    </select>
+    <select id="findUserByNameReturnUser" parameterType="String" resultMap="userMap">
+        select id,username,password,email,sex,address,power from user where username=#{username}
+    </select>
+    <!--根据用户id查询用户名字-->
+    <select id="findUserNameById" parameterType="int" resultType="String">
+        select username from user where id=#{userId}
+    </select>
+
+    <!--根据id来更改信息-->
+    <update id="updateUserById" parameterType="cn.springboot.volunteersystem.entity.User">
+        update user set password=#{password}, email=#{email}, sex=#{sex}, address=#{address} where id=#{id}
+    </update>
+</mapper>
